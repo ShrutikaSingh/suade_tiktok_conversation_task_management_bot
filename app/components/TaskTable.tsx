@@ -109,7 +109,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
       case 'High':
         return 'bg-red-100 text-red-600 border-red-200';
       case 'Medium':
-        return 'bg-blue-100 text-blue-600 border-blue-200';
+        return 'bg-orange-100 text-orange-600 border-orange-200';
       case 'Low':
         return 'bg-gray-100 text-gray-600 border-gray-200';
       default:
