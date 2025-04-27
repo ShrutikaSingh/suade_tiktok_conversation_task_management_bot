@@ -209,7 +209,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                         <td className="px-6 py-4 text-xs text-gray-500">{task.id}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center">
-                            <span className="text-xs text-black">{task.name}</span>
+                            <span className="text-sm text-black">{task.name}</span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
