@@ -17,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`}>
-        <div className="min-h-screen">
+        <div className="min-h-screen relative">
+          <div className="absolute top-4 left-4 z-50">
+            <img src="/logo.png" alt="Logo" width={60} height={60} className="object-contain" />
+          </div>
           {children}
         </div>
       </body>

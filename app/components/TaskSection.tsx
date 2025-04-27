@@ -128,7 +128,7 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
       transition={{ duration: 0.5 }}
     >
       <motion.div 
-        className="flex items-center justify-between mb-6 bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl p-4 border-b border-gray-100"
+        className="flex items-center justify-between mb-0 bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl p-4 border-b border-gray-100"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -160,30 +160,37 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <div className="relative">
-            <select
-              className="appearance-none bg-white border border-gray-200 text-gray-700 rounded-lg py-2 pl-4 pr-10 w-64 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300 transition-all duration-300"
-              value={selectedProduct || ''}
-              onChange={(e) => {
-                if (e.target.value === 'add') {
-                  setIsDialogOpen(true);
-                } else {
-                  onProductSelect(e.target.value);
-                }
-              }}
-            >
-              <option value="" className="bg-white text-gray-400">Select a Product</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id} className="bg-white text-gray-700">
-                  {product.name}
-                </option>
-              ))}
-              <option value="add" className="bg-white text-gray-700">+ Add New Product</option>
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+          <div className="flex items-center gap-2">
+          <svg className="w-5 h-5 text-[#F746A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <span className="text-sm font-medium text-gray-700">Select Product</span>
+            <div className="relative">
+              <select
+                className="appearance-none bg-white border border-gray-200 text-gray-700 rounded-lg py-2 pl-4 pr-10 w-64 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300 transition-all duration-300"
+                value={selectedProduct || ''}
+                onChange={(e) => {
+                  if (e.target.value === 'add') {
+                    setIsDialogOpen(true);
+                  } else {
+                    onProductSelect(e.target.value);
+                  }
+                }}
+              >
+                
+                <option value="" className="bg-white text-gray-400">Select a Product</option>
+                {products.map((product) => (
+                  <option key={product.id} value={product.id} className="bg-white text-gray-700">
+                    {product.name}
+                  </option>
+                ))}
+                <option value="add" className="bg-white text-gray-700">+ Add New Product</option>
+              </select>
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
           </div>
         </motion.div>
