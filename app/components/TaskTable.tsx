@@ -2,12 +2,85 @@
 
 import { Task } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo } from 'react';
 
 interface TaskTableProps {
   tasks: Task[];
 }
 
 export default function TaskTable({ tasks }: TaskTableProps) {
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' | null }>({ key: '', direction: null });
+
+  const handleSort = (key: string) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        if (prev.direction === 'asc') return { key, direction: 'desc' };
+        if (prev.direction === 'desc') return { key: '', direction: null };
+        return { key, direction: 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
+  };
+
+  const sortedTasks = useMemo(() => {
+    if (!sortConfig.key || !sortConfig.direction) return tasks;
+    const sorted = [...tasks];
+    sorted.sort((a, b) => {
+      let aValue = a[sortConfig.key as keyof Task];
+      let bValue = b[sortConfig.key as keyof Task];
+      if (sortConfig.key === 'due_date') {
+        const aTime = aValue ? new Date(aValue as string).getTime() : 0;
+        const bTime = bValue ? new Date(bValue as string).getTime() : 0;
+        if (aTime < bTime) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aTime > bTime) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      if (sortConfig.key === 'id') {
+        const aNum = typeof aValue === 'number' ? aValue : Number(aValue);
+        const bNum = typeof bValue === 'number' ? bValue : Number(bValue);
+        if (aNum < bNum) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aNum > bNum) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      if (sortConfig.key === 'priority') {
+        const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+        const aPriority = priorityOrder[(aValue as 'Low' | 'Medium' | 'High')] ?? 0;
+        const bPriority = priorityOrder[(bValue as 'Low' | 'Medium' | 'High')] ?? 0;
+        if (aPriority < bPriority) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aPriority > bPriority) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      if (aValue === undefined || bValue === undefined) return 0;
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return sorted;
+  }, [tasks, sortConfig]);
+
+  const renderSortArrow = (key: string) => {
+    if (sortConfig.key !== key || !sortConfig.direction) {
+      // Default up/down icon
+      return (
+        <span className="ml-1 inline-block align-middle opacity-40">
+          <svg width="14" height="18" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+            <polygon points="10,4 16,10 4,10" fill="black" />
+            <polygon points="10,20 16,14 4,14" fill="black" />
+          </svg>
+        </span>
+      );
+    }
+    // Show sort direction
+    return (
+      <span className={`ml-1 inline-block transition-transform align-middle ${sortConfig.direction === 'desc' ? 'rotate-180' : ''}`}
+        aria-label={sortConfig.direction === 'asc' ? 'Ascending' : 'Descending'}>
+        <svg width="14" height="18" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+          <polygon points="10,4 16,10 4,10" fill="black" />
+        </svg>
+      </span>
+    );
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'High':
@@ -63,16 +136,24 @@ export default function TaskTable({ tasks }: TaskTableProps) {
         <table className="w-full">
           <thead className="sticky top-0 bg-white z-10">
             <tr className="border-b border-gray-100">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task ID</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('id')}>
+                <span className="flex items-center gap-1">Task ID {renderSortArrow('id')}</span>
+              </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task Name</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Priority</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Status</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Due Date</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('priority')}>
+                <span className="flex items-center gap-1">Priority {renderSortArrow('priority')}</span>
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('status')}>
+                <span className="flex items-center gap-1">Status {renderSortArrow('status')}</span>
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('due_date')}>
+                <span className="flex items-center gap-1">Due Date {renderSortArrow('due_date')}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
             <AnimatePresence>
-              {tasks.length === 0 ? (
+              {sortedTasks.length === 0 ? (
                 <motion.tr
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -97,7 +178,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                   </td>
                 </motion.tr>
               ) : (
-                tasks.map((task, index) => (
+                sortedTasks.map((task, index) => (
                   <motion.tr
                     key={task.id}
                     initial={{ opacity: 0, y: 20 }}
