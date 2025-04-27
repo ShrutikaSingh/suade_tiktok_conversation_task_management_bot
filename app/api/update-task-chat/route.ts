@@ -138,6 +138,14 @@ export async function POST(request: Request) {
         break;
 
       case 'batch_update':
+        // Intercept batch updates for all tasks of a status (like all 'To Do')
+        if (updates && (!taskName || taskName.toLowerCase() === 'all' || taskName.toLowerCase().includes('to do'))) {
+          return NextResponse.json({
+            reply: `Sorry, I don't have the ability to update all tasks at once right now. Try asking for a specific task update instead.\n\nFor example:\n- Can you update the due date of task 134 to 29th April?\n- Can you update the status of task 134 to In Progress?`,
+            updatedTasks: tasks,
+            operation: 'batch_update'
+          });
+        }
         if (updates) {
           const { error: batchError } = await supabase
             .from('tasks')
@@ -154,6 +162,27 @@ export async function POST(request: Request) {
           }
         }
         break;
+
+      case 'query':
+        if (query) {
+          updatedTasks = tasks.filter(task => {
+            if (query.priority && task.priority !== query.priority) return false;
+            if (query.status && task.status !== query.status) return false;
+            if (query.has_due_date !== null) {
+              if (query.has_due_date && !task.due_date) return false;
+              if (!query.has_due_date && task.due_date) return false;
+            }
+            return true;
+          });
+        }
+        break;
+
+      default:
+        return NextResponse.json({
+          reply: `I'm here to help you manage tasks and products. Please ask me about tasks, due dates, priorities, or statuses. For example:\n- Can you update the due date of task 134 to 29th April?\n- Mark {Task Name} as completed`,
+          updatedTasks: tasks,
+          operation: 'none'
+        });
     }
 
     // Fetch updated tasks
@@ -170,20 +199,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Filter tasks if query is specified
-    if (operation === 'query' && query) {
-      updatedTasks = freshTasks.filter(task => {
-        if (query.priority && task.priority !== query.priority) return false;
-        if (query.status && task.status !== query.status) return false;
-        if (query.has_due_date !== null) {
-          if (query.has_due_date && !task.due_date) return false;
-          if (!query.has_due_date && task.due_date) return false;
-        }
-        return true;
-      });
-    } else {
-      updatedTasks = freshTasks;
-    }
+    updatedTasks = freshTasks;
 
     return NextResponse.json({ 
       reply,
