@@ -163,17 +163,17 @@ export default function TaskTable({ tasks }: TaskTableProps) {
         <table className="w-full">
           <thead className="sticky top-0 bg-white z-10">
             <tr className="border-b border-gray-100">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('id')}>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('id')}>
                 <span className="flex items-center gap-1">Task ID {renderSortArrow('id')}</span>
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task Name</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('priority')}>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-black">Task Name</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('priority')}>
                 <span className="flex items-center gap-1">Priority {renderSortArrow('priority')}</span>
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('status')}>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('status')}>
                 <span className="flex items-center gap-1">Status {renderSortArrow('status')}</span>
               </th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('due_date')}>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('due_date')}>
                 <span className="flex items-center gap-1">Due Date {renderSortArrow('due_date')}</span>
               </th>
             </tr>
@@ -185,7 +185,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                 return (
                   <>
                     <tr key={status + '-header'} className="bg-gray-50 border-b border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors" onClick={() => toggleSection(status)}>
-                      <td colSpan={5} className="px-3 py-2 font-semibold text-gray-700 flex items-center whitespace-nowrap">
+                      <td colSpan={5} className="px-1 py-1 font-semibold text-black-700 flex items-center whitespace-nowrap">
                         <svg className={`w-4 h-4 mr-2 transition-transform ${openSections[status] ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -206,25 +206,25 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                         transition={{ duration: 0.3, delay: index * 0.1 }}
                         className="border-b border-white/5 hover:bg-[#F746A4]/5 transition-colors"
                       >
-                        <td className="px-6 py-4 font-semibold text-gray-500">{task.id}</td>
+                        <td className="px-6 py-4 text-xs text-gray-500">{task.id}</td>
                         <td className="px-6 py-4">
                           <div className="flex items-center">
-                            <span className="font-medium text-[#F746A4]">{task.name}</span>
+                            <span className="text-xs text-black">{task.name}</span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getPriorityColor(task.priority)}`}>
+                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs border ${getPriorityColor(task.priority)}`}>
                             {task.priority}
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(task.status)}`}>
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs  border ${getStatusColor(task.status)}`}>
                             {getStatusIcon(task.status)}
                             {task.status}
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="flex items-center text-[#F746A4]/60 text-sm">
+                          <div className="flex items-center text-black  text-xs">
                             <svg className="w-4 h-4 mr-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
