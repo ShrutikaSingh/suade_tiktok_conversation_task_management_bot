@@ -58,7 +58,11 @@ export async function POST(request: Request) {
       response_format: { type: 'json_object' }
     });
 
-    const tasks = JSON.parse(completion.choices[0].message.content).tasks;
+    const contentStr = completion.choices[0].message.content;
+    if (typeof contentStr !== 'string') {
+      throw new Error('OpenAI response content is null or not a string');
+    }
+    const tasks = JSON.parse(contentStr).tasks;
 
     // Save tasks to database
     const tasksWithIds = tasks.map((task: any) => ({
