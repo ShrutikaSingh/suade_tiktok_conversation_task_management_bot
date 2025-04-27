@@ -33,42 +33,6 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
     }
   }, [selectedProduct]);
 
-  // Show onboarding/help message if chat is empty and product is selected
-  useEffect(() => {
-    async function maybeShowOnboardingOrHelp() {
-      if (selectedProduct) {
-        // Check if there are any tasks for this product
-        const { data: tasks, error } = await supabase
-          .from('tasks')
-          .select('*')
-          .eq('product_id', selectedProduct);
-        if (!error && Array.isArray(tasks) && messages.length === 0) {
-          if (tasks.length === 0) {
-            setMessages([
-              {
-                product_id: selectedProduct,
-                message: "Hello Cadence, I noticed you didn't have any tasks created. You can paste the conversation for the products into the Parse Conversation input box, and I'll generate the tasks for you..",
-                is_user: false,
-                created_at: new Date().toISOString(),
-              },
-            ]);
-          } else {
-            setMessages([
-              {
-                product_id: selectedProduct,
-                message: "I'm here to help you manage tasks and products. Please ask me about tasks, due dates, priorities, or statuses. For example:\n- Can you update the due date of task 134 to 29th April?\n- Mark {Task Name} as completed",
-                is_user: false,
-                created_at: new Date().toISOString(),
-              },
-            ]);
-          }
-        }
-      }
-    }
-    maybeShowOnboardingOrHelp();
-    // Only run when selectedProduct or messages changes
-  }, [selectedProduct, messages]);
-
   const fetchProductDetails = async () => {
     const { data, error } = await supabase
       .from('products')
@@ -109,7 +73,36 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
       .order('created_at', { ascending: true });
 
     if (!error && data) {
-      setMessages(data);
+      if (data.length > 0) {
+        setMessages(data);
+      } else if (selectedProduct) {
+        // No chat history, check for tasks
+        const { data: tasks, error: tasksError } = await supabase
+          .from('tasks')
+          .select('*')
+          .eq('product_id', selectedProduct);
+        if (!tasksError && Array.isArray(tasks)) {
+          if (tasks.length === 0) {
+            setMessages([
+              {
+                product_id: selectedProduct,
+                message: "Hello Cadence, I noticed you didn't have any tasks created. You can paste the conversation for the products into the Parse Conversation input box, and I'll generate the tasks for you..",
+                is_user: false,
+                created_at: new Date().toISOString(),
+              },
+            ]);
+          } else {
+            setMessages([
+              {
+                product_id: selectedProduct,
+                message: "I'm here to help you manage tasks and products. Please ask me about tasks, due dates, priorities, or statuses. For example:\n- Can you update the due date of task 134 to 29th April?\n- Mark {Task Name} as completed",
+                is_user: false,
+                created_at: new Date().toISOString(),
+              },
+            ]);
+          }
+        }
+      }
     }
   };
 
