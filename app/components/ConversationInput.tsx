@@ -25,8 +25,8 @@ export default function ConversationInput({ onSubmit }: ConversationInputProps) 
             value={conversation}
             onChange={(e) => setConversation(e.target.value)}
             placeholder="Paste your social media conversation here..."
-            className="fancy-input w-full h-52 resize-none rounded-xl border border-indigo-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all duration-300"
-            style={{ minHeight: '180px', maxHeight: '300px' }}
+            className="fancy-input w-full h-28 resize-none rounded-xl border border-indigo-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all duration-300"
+            style={{ minHeight: '100px', maxHeight: '160px' }}
           />
           <div className="absolute bottom-3 right-3 flex items-center space-x-2">
             <button
