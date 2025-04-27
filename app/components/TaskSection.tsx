@@ -87,8 +87,8 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
         throw new Error('Failed to parse conversation');
       }
 
-      const newTasks = await response.json();
-      onTasksUpdated([...tasks, ...newTasks]);
+      // After parsing and creating tasks, fetch the latest tasks for the selected product
+      await fetchTasks();
     } catch (error) {
       console.error('Error parsing conversation:', error);
     } finally {
