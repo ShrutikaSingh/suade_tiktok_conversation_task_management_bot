@@ -119,7 +119,7 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
             transition={{ delay: 0.4 }}
           >
             <span className="w-2 h-2 rounded-full bg-gray-300 animate-pulse" />
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-pink-600 ">
               {tasks.length} tasks
             </span>
           </motion.div>
@@ -161,7 +161,7 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
       </motion.div>
 
       <motion.div 
-        className="flex-1 overflow-hidden mt-4 min-h-[400px]"
+        className="flex-1 flex flex-col min-h-0"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
@@ -210,7 +210,7 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="h-full"
+              className="flex-1 overflow-y-auto h-0"
             >
               <TaskTable tasks={tasks} />
             </motion.div>

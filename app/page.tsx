@@ -13,33 +13,30 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-12 animate-float">
-          <h1 className="text-4xl font-bold text-white mb-2">Suade Task Manager</h1>
-          <p className="text-white/80">AI-powered task management for beauty conversations</p>
-        </header>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Side - Tasks */}
-          <div className="fancy-card h-[calc(100vh-12rem)]">
-            <TaskSection 
-              selectedProduct={selectedProduct}
-              onProductSelect={setSelectedProduct}
-              tasks={tasks}
-              onTasksUpdated={handleTasksUpdated}
-            />
-          </div>
-
-          {/* Right Side - Chat */}
-          <div className="fancy-card h-[calc(100vh-12rem)]">
-            <ChatSection 
-              selectedProduct={selectedProduct}
-              onTasksUpdated={handleTasksUpdated}
-            />
+    <div className="min-h-screen h-screen w-full overflow-hidden bg-[linear-gradient(135deg,_#f6fbff_0%,_#d6f1ff_100%)]">
+      <main className="min-h-screen h-screen p-8 overflow-hidden">
+        <div className="max-w-7xl mx-auto h-full flex flex-col">
+     
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0 h-full">
+            {/* Left Side - Tasks */}
+            <div className="fancy-card flex flex-col h-full min-h-0">
+              <TaskSection 
+                selectedProduct={selectedProduct}
+                onProductSelect={setSelectedProduct}
+                tasks={tasks}
+                onTasksUpdated={handleTasksUpdated}
+              />
+            </div>
+            {/* Right Side - Chat */}
+            <div className="fancy-card flex flex-col h-full min-h-0">
+              <ChatSection 
+                selectedProduct={selectedProduct}
+                onTasksUpdated={handleTasksUpdated}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

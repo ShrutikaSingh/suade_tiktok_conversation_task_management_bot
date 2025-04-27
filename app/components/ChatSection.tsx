@@ -172,7 +172,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
               transition={{ delay: 0.4 }}
             >
               <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
-              <span className="text-sm text-pink-600/60">
+              <span className="text-sm text-pink-600">
                 {messages.length} messages
               </span>
             </motion.div>
@@ -185,12 +185,12 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <div className="text-sm text-pink-600/60 bg-pink-500/5 px-4 py-2 rounded-lg border border-pink-500/20">
+            <div className="text-sm text-pink-600 bg-pink-300/7 px-4 py-2 rounded-lg border border-pink-500/20">
               Product ID: {selectedProduct}
             </div>
             <button
               onClick={() => setShowClearConfirm(true)}
-              className="text-sm text-pink-600 hover:text-pink-700 bg-pink-500/5 hover:bg-pink-500/10 px-4 py-2 rounded-lg border border-pink-500/20 transition-all duration-300"
+               className="px-4 py-2 text-sm text-white bg-pink-500 hover:bg-pink-600 rounded-lg transition-colors"
             >
               Clear Chat
             </button>
@@ -238,7 +238,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
         )}
       </AnimatePresence>
 
-      <div className="flex-1 overflow-hidden mb-4 relative">
+      <div className="flex-1 flex flex-col min-h-0 mb-4 relative">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div
@@ -283,7 +283,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="h-full"
+              className="flex-1 overflow-y-auto h-0"
             >
               <ChatHistory messages={messages} />
             </motion.div>
