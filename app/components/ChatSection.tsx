@@ -144,20 +144,20 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
 
   return (
     <motion.div 
-      className="h-full flex flex-col bg-[#FEF5FA] rounded-xl border border-pink-500/20"
+      className="h-full flex flex-col bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl border border-gray-100 shadow-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div 
-        className="flex items-center justify-between mb-6 p-4 border-b border-pink-500/20"
+        className="flex items-center justify-between mb-6 bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl p-4 border-b border-gray-100"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <motion.div className="flex items-center gap-3">
           <motion.h2 
-            className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent"
+            className="text-2xl font-bold text-gray-900"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}

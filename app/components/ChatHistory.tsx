@@ -23,7 +23,7 @@ function getInitials(name: string) {
 
 export default function ChatHistory({ messages }: ChatHistoryProps) {
   return (
-    <div className="space-y-6 p-4 h-full overflow-y-auto bg-[#F8F8FA]">
+    <div className="space-y-6 p-4 h-full overflow-y-auto bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)]">
       <AnimatePresence>
         {messages.length === 0 ? (
           <motion.div

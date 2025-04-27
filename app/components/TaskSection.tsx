@@ -15,11 +15,10 @@ const supabase = createClient(
 interface TaskSectionProps {
   selectedProduct: string | null;
   onProductSelect: (productId: string) => void;
-  tasks: Task[];
-  onTasksUpdated: (tasks: Task[]) => void;
 }
 
-export default function TaskSection({ selectedProduct, onProductSelect, tasks, onTasksUpdated }: TaskSectionProps) {
+export default function TaskSection({ selectedProduct, onProductSelect }: TaskSectionProps) {
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +46,7 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
       const response = await fetch(`/api/get-tasks?product_id=${selectedProduct}`);
       if (!response.ok) throw new Error('Failed to fetch tasks');
       const data = await response.json();
-      onTasksUpdated(data);
+      setTasks(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     } finally {
@@ -79,7 +78,7 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
       }
 
       const newTasks = await response.json();
-      onTasksUpdated([...tasks, ...newTasks]);
+      setTasks([...tasks, ...newTasks]);
     } catch (error) {
       console.error('Error parsing conversation:', error);
     } finally {
@@ -87,22 +86,26 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
     }
   };
 
+  const handleTasksUpdated = (updatedTasks: Task[]) => {
+    setTasks(updatedTasks);
+  };
+
   return (
     <motion.div 
-      className="h-full flex flex-col"
+      className="h-full flex flex-col bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl border border-gray-100 shadow-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div 
-        className="flex items-center justify-between mb-6 bg-[#F746A4]/5 backdrop-blur-sm rounded-xl p-4 border border-[#F746A4]/10"
+        className="flex items-center justify-between mb-6 bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl p-4 border-b border-gray-100"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <div className="flex items-center gap-3">
           <motion.h2 
-            className="text-2xl font-bold bg-gradient-to-r from-[#F746A4] to-purple-500 bg-clip-text text-transparent"
+            className="text-2xl font-bold text-gray-900"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -115,8 +118,8 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <span className="w-2 h-2 rounded-full bg-[#F746A4] animate-pulse" />
-            <span className="text-sm text-[#F746A4]/60">
+            <span className="w-2 h-2 rounded-full bg-gray-300 animate-pulse" />
+            <span className="text-sm text-gray-400">
               {tasks.length} tasks
             </span>
           </motion.div>
@@ -129,19 +132,19 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
         >
           <div className="relative">
             <select
-              className="appearance-none bg-[#F746A4]/5 border border-[#F746A4]/10 text-[#F746A4]/90 rounded-lg py-2 pl-4 pr-10 w-64 focus:outline-none focus:ring-2 focus:ring-[#F746A4]/20 focus:border-[#F746A4]/30 transition-all duration-300"
+              className="appearance-none bg-white border border-gray-200 text-gray-700 rounded-lg py-2 pl-4 pr-10 w-64 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300 transition-all duration-300"
               value={selectedProduct || ''}
               onChange={(e) => onProductSelect(e.target.value)}
             >
-              <option value="" className="bg-gray-900">Select a Product</option>
+              <option value="" className="bg-white text-gray-400">Select a Product</option>
               {products.map((product) => (
-                <option key={product.id} value={product.id} className="bg-gray-900">
+                <option key={product.id} value={product.id} className="bg-white text-gray-700">
                   {product.name}
                 </option>
               ))}
             </select>
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg className="w-5 h-5 text-[#F746A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>

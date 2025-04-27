@@ -9,28 +9,28 @@ interface TaskTableProps {
 
 export default function TaskTable({ tasks }: TaskTableProps) {
   const getPriorityColor = (priority: string) => {
-    switch (priority.toLowerCase()) {
-      case 'high':
-        return 'bg-[#F746A4]/10 text-[#F746A4] border-[#F746A4]/20';
-      case 'medium':
-        return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
-      case 'low':
-        return 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20';
+    switch (priority) {
+      case 'High':
+        return 'bg-red-100 text-red-600 border-red-200';
+      case 'Medium':
+        return 'bg-blue-100 text-blue-600 border-blue-200';
+      case 'Low':
+        return 'bg-gray-100 text-gray-600 border-gray-200';
       default:
-        return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+        return 'bg-gray-100 text-gray-600 border-gray-200';
     }
   };
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'bg-[#F746A4]/10 text-[#F746A4] border-[#F746A4]/20';
-      case 'in progress':
-        return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
-      case 'to do':
-        return 'bg-indigo-500/10 text-indigo-500 border-indigo-500/20';
+    switch (status) {
+      case 'Completed':
+        return 'bg-green-100 text-green-600 border-green-200';
+      case 'To Do':
+        return 'bg-blue-100 text-blue-600 border-blue-200';
+      case 'In Progress':
+        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
       default:
-        return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+        return 'bg-gray-100 text-gray-600 border-gray-200';
     }
   };
 
@@ -58,15 +58,15 @@ export default function TaskTable({ tasks }: TaskTableProps) {
   };
 
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-xl border border-white/10 overflow-hidden h-full">
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-[#F746A4]/20 scrollbar-track-transparent h-full">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full">
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent h-full">
         <table className="w-full">
-          <thead className="sticky top-0 bg-white/5 backdrop-blur-sm z-10">
-            <tr className="border-b border-white/10">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-[#F746A4]">Task Name</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-[#F746A4]">Priority</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-[#F746A4]">Status</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-[#F746A4]">Due Date</th>
+          <thead className="sticky top-0 bg-white z-10">
+            <tr className="border-b border-gray-100">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task Name</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Priority</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Status</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Due Date</th>
             </tr>
           </thead>
           <tbody>
