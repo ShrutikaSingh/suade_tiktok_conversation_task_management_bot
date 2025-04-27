@@ -164,7 +164,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
           >
             Chat History
           </motion.h2>
-          {selectedProduct && (
+          {/* {selectedProduct && (
             <motion.div 
               className="flex items-center gap-2"
               initial={{ opacity: 0 }}
@@ -176,7 +176,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
                 {messages.length} messages
               </span>
             </motion.div>
-          )}
+          )} */}
         </motion.div>
         {selectedProduct && (
           <motion.div 

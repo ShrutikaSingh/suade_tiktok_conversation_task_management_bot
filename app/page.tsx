@@ -17,9 +17,9 @@ export default function Home() {
       <main className="min-h-screen h-screen p-8 overflow-hidden">
         <div className="max-w-7xl mx-auto h-full flex flex-col">
      
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0 h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 min-h-0 h-full">
             {/* Left Side - Tasks */}
-            <div className="fancy-card flex flex-col h-full min-h-0">
+            <div className="fancy-card flex flex-col h-full min-h-0 lg:col-span-2">
               <TaskSection 
                 selectedProduct={selectedProduct}
                 onProductSelect={setSelectedProduct}
@@ -28,7 +28,7 @@ export default function Home() {
               />
             </div>
             {/* Right Side - Chat */}
-            <div className="fancy-card flex flex-col h-full min-h-0">
+            <div className="fancy-card flex flex-col h-full min-h-0 lg:col-span-1">
               <ChatSection 
                 selectedProduct={selectedProduct}
                 onTasksUpdated={handleTasksUpdated}

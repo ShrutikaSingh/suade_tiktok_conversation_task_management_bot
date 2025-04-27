@@ -63,6 +63,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
         <table className="w-full">
           <thead className="sticky top-0 bg-white z-10">
             <tr className="border-b border-gray-100">
+              <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task ID</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-black">Task Name</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-black">Priority</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-black">Status</th>
@@ -78,7 +79,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <td colSpan={4} className="px-6 py-12">
+                  <td colSpan={5} className="px-6 py-12">
                     <div className="text-center">
                       <motion.div
                         initial={{ scale: 0.8 }}
@@ -105,6 +106,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     className="border-b border-white/5 hover:bg-[#F746A4]/5 transition-colors"
                   >
+                    <td className="px-6 py-4 font-semibold text-gray-500">{task.id}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         <span className="font-medium text-[#F746A4]">{task.name}</span>
