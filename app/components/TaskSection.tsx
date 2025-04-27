@@ -22,6 +22,8 @@ interface TaskSectionProps {
 export default function TaskSection({ selectedProduct, onProductSelect, tasks, onTasksUpdated }: TaskSectionProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newProductName, setNewProductName] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -94,6 +96,30 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
     }
   };
 
+  const handleAddProduct = async () => {
+    if (!newProductName.trim()) {
+      alert('Product name cannot be empty');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .insert([{ name: newProductName }])
+        .select()
+        .single();
+      if (error) throw error;
+      setProducts([data, ...products]);
+      onProductSelect(data.id);
+      setIsDialogOpen(false);
+      setNewProductName('');
+    } catch (error) {
+      console.error('Error creating product:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <motion.div 
       className="h-full flex flex-col bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)] rounded-xl border border-gray-100 shadow-sm"
@@ -138,7 +164,13 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
             <select
               className="appearance-none bg-white border border-gray-200 text-gray-700 rounded-lg py-2 pl-4 pr-10 w-64 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300 transition-all duration-300"
               value={selectedProduct || ''}
-              onChange={(e) => onProductSelect(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value === 'add') {
+                  setIsDialogOpen(true);
+                } else {
+                  onProductSelect(e.target.value);
+                }
+              }}
             >
               <option value="" className="bg-white text-gray-400">Select a Product</option>
               {products.map((product) => (
@@ -146,6 +178,7 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
                   {product.name}
                 </option>
               ))}
+              <option value="add" className="bg-white text-gray-700">+ Add New Product</option>
             </select>
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -221,6 +254,53 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Dialog for adding a new product */}
+      {isDialogOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setIsDialogOpen(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.9 }}
+            className="bg-white rounded-lg p-6 w-96 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-xl font-bold mb-4 text-gray-900">Add New Product</h2>
+            <input
+              type="text"
+              value={newProductName}
+              onChange={(e) => setNewProductName(e.target.value)}
+              placeholder="Enter product name"
+              className="w-full p-2 border border-gray-200 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-[#F746A4]/20 focus:border-[#F746A4]"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleAddProduct();
+                }
+              }}
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setIsDialogOpen(false)}
+                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddProduct}
+                className="px-4 py-2 bg-[#F746A4] text-white rounded-lg hover:bg-[#F746A4]/90 transition-colors"
+              >
+                Add Product
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </motion.div>
   );
 } 
