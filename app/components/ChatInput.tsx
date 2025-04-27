@@ -21,26 +21,26 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full px-4 mt-4">
-      <div className="flex items-center gap-1">
-        <input
-          type="text"
+    <form onSubmit={handleSubmit} className="w-full mt-4">
+      <div className="relative flex items-end w-full">
+        <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Type your message..."
-          className="flex-1 py-3 px-4 rounded-xl border border-indigo-200 bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 shadow-sm transition-all duration-300"
+          className="flex-1 py-4 px-5 rounded-2xl border border-[#b993f7] bg-white text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#b993f7]/40 focus:border-[#8541f2] shadow-lg transition-all duration-300 resize-none min-h-[3.5rem] text-base pr-16"
           disabled={disabled}
           aria-label="Chat message input"
+          rows={3}
         />
         <button
           type="submit"
           disabled={!message.trim() || disabled}
-          className="ml-auto gap-2 px-5 py-2 rounded-xl font-semibold bg-gradient-to-r from-[#8541f2] to-[#b993f7] text-white shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="absolute right-3 bottom-3 w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-[#b993f7] to-[#8541f2] text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Send message"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
         </button>
