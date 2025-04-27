@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskSection from './components/TaskSection';
 import ChatSection from './components/ChatSection';
 
@@ -8,8 +8,22 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [tasks, setTasks] = useState<any[]>([]);
 
-  const handleTasksUpdated = (updatedTasks: any[]) => {
-    setTasks(updatedTasks);
+  // Centralized fetchTasks function
+  const fetchTasks = async (productId: string | null) => {
+    if (!productId) return;
+    const response = await fetch(`/api/get-tasks?product_id=${productId}`);
+    const data = await response.json();
+    setTasks(data);
+  };
+
+  // Fetch tasks when selectedProduct changes
+  useEffect(() => {
+    fetchTasks(selectedProduct);
+  }, [selectedProduct]);
+
+  // Always re-fetch after any update
+  const handleTasksUpdated = () => {
+    fetchTasks(selectedProduct);
   };
 
   return (
@@ -26,6 +40,7 @@ export default function Home() {
                 onProductSelect={setSelectedProduct}
                 tasks={tasks}
                 onTasksUpdated={handleTasksUpdated}
+                fetchTasks={fetchTasks}
               />
             </div>
             {/* Right Side - Chat */}
@@ -33,6 +48,7 @@ export default function Home() {
               <ChatSection 
                 selectedProduct={selectedProduct}
                 onTasksUpdated={handleTasksUpdated}
+                fetchTasks={fetchTasks}
               />
             </div>
           </div>
