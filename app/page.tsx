@@ -40,7 +40,6 @@ export default function Home() {
                 onProductSelect={setSelectedProduct}
                 tasks={tasks}
                 onTasksUpdated={handleTasksUpdated}
-                fetchTasks={fetchTasks}
               />
             </div>
             {/* Right Side - Chat */}
@@ -48,7 +47,7 @@ export default function Home() {
               <ChatSection 
                 selectedProduct={selectedProduct}
                 onTasksUpdated={handleTasksUpdated}
-                fetchTasks={fetchTasks}
+             
               />
             </div>
           </div>
