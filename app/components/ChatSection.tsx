@@ -238,7 +238,7 @@ export default function ChatSection({ selectedProduct, onTasksUpdated }: ChatSec
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col min-h-0 mb-4 relative">
+      <div className="flex-1 flex flex-col min-h-0  relative">
         <AnimatePresence mode="wait">
           {isLoading ? (
             <motion.div

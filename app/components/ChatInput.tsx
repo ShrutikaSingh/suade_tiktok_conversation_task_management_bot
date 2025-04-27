@@ -21,7 +21,7 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full mt-4">
+    <form onSubmit={handleSubmit} className="w-full mt-0">
       <div className="relative flex items-end w-full">
         <textarea
           value={message}
