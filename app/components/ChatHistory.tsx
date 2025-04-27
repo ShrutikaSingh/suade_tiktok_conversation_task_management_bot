@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { FiUser } from 'react-icons/fi';
 import { FaRobot } from 'react-icons/fa';
+import { useEffect, useRef } from 'react';
 
 interface ChatHistoryProps {
   messages: ChatMessage[];
@@ -22,6 +23,14 @@ function getInitials(name: string) {
 }
 
 export default function ChatHistory({ messages }: ChatHistoryProps) {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
     <div className="space-y-6 p-4 h-full overflow-y-auto bg-[linear-gradient(135deg,_#f8f6ff_0%,_#ede7fa_100%)]">
       <AnimatePresence>
@@ -63,48 +72,51 @@ export default function ChatHistory({ messages }: ChatHistoryProps) {
             </div>
           </motion.div>
         ) : (
-          messages.map((message, index) => {
-            const isUser = message.is_user;
-            const name = isUser ? 'Candace Doe' : 'Suade';
-            const date = new Date(message.created_at);
-            const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-            return (
-              <motion.div
-                key={message.id || index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: isUser ? 100 : -100 }}
-                transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
-                className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-end gap-2`}
-              >
-                {/* AI Avatar */}
-                {!isUser && (
-                  <div className="flex flex-col items-center mr-2">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-xl border shadow">
-                      <FaRobot />
+          <>
+            {messages.map((message, index) => {
+              const isUser = message.is_user;
+              const name = isUser ? 'Candace Doe' : 'Suade';
+              const date = new Date(message.created_at);
+              const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+              return (
+                <motion.div
+                  key={message.id || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: isUser ? 100 : -100 }}
+                  transition={{ duration: 0.3, delay: index * 0.1, ease: "easeOut" }}
+                  className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-end gap-2`}
+                >
+                  {/* AI Avatar */}
+                  {!isUser && (
+                    <div className="flex flex-col items-center mr-2">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-xl border shadow">
+                        <FaRobot />
+                      </div>
+                    </div>
+                  )}
+                  <div className={`max-w-[70%] flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-gray-900 text-sm">{name}</span>
+                      <span className="text-xs text-gray-400">{formattedDate}</span>
+                    </div>
+                    <div className={`p-4 rounded-2xl shadow-md ${isUser ? 'bg-white' : 'bg-gradient-to-br from-white to-[#f3e8ff]'} text-gray-900 text-base whitespace-pre-line`}>
+                      {message.message}
                     </div>
                   </div>
-                )}
-                <div className={`max-w-[70%] flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-gray-900 text-sm">{name}</span>
-                    <span className="text-xs text-gray-400">{formattedDate}</span>
-                  </div>
-                  <div className={`p-4 rounded-2xl shadow-md ${isUser ? 'bg-white' : 'bg-gradient-to-br from-white to-[#f3e8ff]'} text-gray-900 text-base whitespace-pre-line`}>
-                    {message.message}
-                  </div>
-                </div>
-                {/* User Avatar */}
-                {isUser && (
-                  <div className="flex flex-col items-center ml-2">
-                    <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 text-xl border shadow">
-                      <FiUser />
+                  {/* User Avatar */}
+                  {isUser && (
+                    <div className="flex flex-col items-center ml-2">
+                      <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 text-xl border shadow">
+                        <FiUser />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </motion.div>
-            );
-          })
+                  )}
+                </motion.div>
+              );
+            })}
+            <div ref={bottomRef} />
+          </>
         )}
       </AnimatePresence>
       {/* Processing State Example (show if needed) */}
