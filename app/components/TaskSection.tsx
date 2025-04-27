@@ -15,10 +15,11 @@ const supabase = createClient(
 interface TaskSectionProps {
   selectedProduct: string | null;
   onProductSelect: (productId: string) => void;
+  tasks: Task[];
+  onTasksUpdated: (tasks: Task[]) => void;
 }
 
-export default function TaskSection({ selectedProduct, onProductSelect }: TaskSectionProps) {
-  const [tasks, setTasks] = useState<Task[]>([]);
+export default function TaskSection({ selectedProduct, onProductSelect, tasks, onTasksUpdated }: TaskSectionProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +47,7 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
       const response = await fetch(`/api/get-tasks?product_id=${selectedProduct}`);
       if (!response.ok) throw new Error('Failed to fetch tasks');
       const data = await response.json();
-      setTasks(data);
+      onTasksUpdated(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     } finally {
@@ -78,16 +79,12 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
       }
 
       const newTasks = await response.json();
-      setTasks([...tasks, ...newTasks]);
+      onTasksUpdated([...tasks, ...newTasks]);
     } catch (error) {
       console.error('Error parsing conversation:', error);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleTasksUpdated = (updatedTasks: Task[]) => {
-    setTasks(updatedTasks);
   };
 
   return (
@@ -204,7 +201,7 @@ export default function TaskSection({ selectedProduct, onProductSelect }: TaskSe
                 </motion.p>
               </motion.div>
             </motion.div>
-          ) : (
+          ) :(
             <motion.div
               key="table"
               initial={{ opacity: 0 }}
