@@ -30,6 +30,13 @@ export default function TaskSection({ selectedProduct, onProductSelect, tasks, o
     }
   }, [selectedProduct]);
 
+  // Select the first product by default if none is selected
+  useEffect(() => {
+    if (products.length > 0 && !selectedProduct) {
+      onProductSelect(products[0].id);
+    }
+  }, [products, selectedProduct, onProductSelect]);
+
   const fetchProducts = async () => {
     const { data, error } = await supabase
       .from('products')
