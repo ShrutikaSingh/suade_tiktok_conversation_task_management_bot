@@ -13,6 +13,7 @@ export default function Home() {
     if (!productId) return;
     const response = await fetch(`/api/get-tasks?product_id=${productId}`);
     const data = await response.json();
+    console.log('data', data)
     setTasks(data);
   };
 

@@ -40,3 +40,4 @@ CREATE INDEX idx_tasks_product_id ON tasks(product_id);
 CREATE INDEX idx_tasks_status ON tasks(status);
 CREATE INDEX idx_chat_history_product_id ON chat_history(product_id);
 CREATE INDEX idx_conversations_product_id ON conversations(product_id);
+

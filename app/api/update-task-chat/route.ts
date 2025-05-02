@@ -52,12 +52,23 @@ export async function POST(request: Request) {
           You can perform the following operations:
           1. Update task status (To Do, In Progress, Completed)
           2. Update task priority (High, Medium, Low)
+          3. Update task category (see category enum below)
           3. Add/update due dates
           4. Delete tasks
           5. Filter/query tasks
           6. Provide task summaries
           7. Batch updates
           
+          Valid categories (only use these as values in "category"):
+        - Product Suggestions
+        - Customer Support
+        - Collaboration or Partnership
+        - Shipping and Availability
+        - Content Requests
+        - Shade or Color Requests
+        - Application or Usage Questions
+        - Others
+
           Return your response in this JSON format:
           {
             "operation": "update/delete/query/summary",
@@ -100,6 +111,8 @@ export async function POST(request: Request) {
           if (updates.priority) updateData.priority = updates.priority;
           if (updates.status) updateData.status = updates.status;
           if (updates.due_date) updateData.due_date = updates.due_date;
+          if (updates.category) updateData.category = updates.category;
+
 
           if (Object.keys(updateData).length > 0) {
             const { error: updateError } = await supabase

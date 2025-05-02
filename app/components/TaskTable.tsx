@@ -153,6 +153,28 @@ export default function TaskTable({ tasks }: TaskTableProps) {
     }
   };
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Product Suggestions':
+        return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'Customer Support':
+        return 'bg-pink-100 text-pink-700 border-pink-200';
+      case 'Collaboration or Partnership':
+        return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'Shipping and Availability':
+        return 'bg-cyan-100 text-cyan-700 border-cyan-200';
+      case 'Content Requests':
+        return 'bg-indigo-100 text-indigo-700 border-indigo-200';
+      case 'Shade or Color Requests':
+        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+      case 'Application or Usage Questions':
+        return 'bg-green-100 text-green-700 border-green-200';
+      case 'Others':
+      default:
+        return 'bg-gray-100 text-gray-700 border-gray-200';
+    }
+  };
+  
   const toggleSection = (status: string) => {
     setOpenSections((prev) => ({ ...prev, [status]: !prev[status] }));
   };
@@ -172,6 +194,9 @@ export default function TaskTable({ tasks }: TaskTableProps) {
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('status')}>
                 <span className="flex items-center gap-1">Status {renderSortArrow('status')}</span>
+              </th>
+               <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('status')}>
+                <span className="flex items-center gap-1">Category</span>
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-black cursor-pointer select-none" onClick={() => handleSort('due_date')}>
                 <span className="flex items-center gap-1">Due Date {renderSortArrow('due_date')}</span>
@@ -221,6 +246,12 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs  border ${getStatusColor(task.status)}`}>
                             {getStatusIcon(task.status)}
                             {task.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-cyan-100 border ${getCategoryColor(task.category)} `}>
+                            
+                            {task.category}
                           </span>
                         </td>
                         <td className="px-6 py-4">
